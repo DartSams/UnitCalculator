@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div id="given-data">
+        <input type="text" name="original-data-number" id="original-data-number">
+        <select name="original-conversion" id="original-data-conversion">
+            <option value=""></option>
+            <option value="millimeters">millimeter</option>
+            <option value="centimeters">centimeter</option>
+            <option value="inches">inch</option>
+            <option value="feet">feet</option>
+            <option value="yard">yard</option>
+            <option value="meter">meter</option>
+            <option value="kilometer">kilometer</option>
+            <option value="miles">miles</option>
+        </select>
+    </div>
+</body>
+<script>
+    var socket = io();
+    let conversionType = document.querySelector("#original-data-conversion")
+    conversionType.addEventListener("change",conversion)
+
+    function conversion(){
+        let number = document.querySelector("#original-data-number")
+        socket.emit('originalMillimeter', {originalNumber:number.value,originalConversion:conversionType.value}); 
+    } //grabs the given data which is the original number and type that you want to convert to other types to send to backend
+
+    socket.on('new_data', function(data) {
+        console.log(data)
+    }); //recieves all the new data from the backend to be displayed
+</script>
+</html>
