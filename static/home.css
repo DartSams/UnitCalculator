@@ -1,0 +1,122 @@
+  
+*{
+    margin:0
+}
+
+/* ==================== CSS Variables =================== */
+:root {
+    --Sidebar_color: #1e90ff;
+    --main_content: #white;
+    --Sidebar_hamburger:black;
+    --Text_size:20px;
+    --Popup_background:rgba(0,0,0,0.6);
+    --Text_color:black;
+    --Task_border:grey;
+    --Dropdown_background:white;
+    --Settings_background:grey;
+    --calendar_day: #1e90ff;
+    --calendar_border:grey
+
+}
+
+#center {
+    display: flex;
+    justify-content: center;
+    height: auto; /* important so when creating new task it doesnt go beyond the border */
+    background-color: var(--white);
+    padding:50px;
+}
+
+#sidebar {
+    position: fixed;
+    width:250px;
+    height: 100%;
+    /* background-color: var(--Sidebar_color); */
+    background-color: palegreen;
+
+    left:-310px;
+    transition: 1s;
+    z-index:2;
+}
+
+#sidebar #toggle {
+    position: fixed;
+    left:15px;
+    top:10px
+}
+
+/* ==================== CSS hamburger =================== */
+#sidebar #toggle span{
+    width:45px;
+    height:5px;
+    background-color: var(--Sidebar_hamburger);
+    /* background-color: palegreen; */
+    display:block;
+    margin-top: 4px;;
+} 
+
+#sidebar #sidebar-buttons {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top:60px;
+    left:5px;
+    justify-content: center;
+    align-items: center;
+}
+
+#sidebar #sidebar-buttons button {
+    background: none;
+    border:none;
+    padding:5px;
+    width:55%;
+    margin-bottom: 10px;
+    font-size: var(--Text_size);   
+    color: black; 
+}
+
+#sidebar #sidebar-buttons button:hover {
+    cursor: pointer;
+    border:3px white solid
+}
+
+#sidebar #sidebar-buttons #profile-div {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    bottom:0;
+    border:3px white solid;
+    border-radius: 5px;
+    padding:5px;
+    margin-bottom: 10px;
+}
+
+#sidebar p {
+    font-size: 20px;
+}
+
+#sidebar #sidebar-buttons #profile-div p {
+    margin-right: 70px;
+}
+
+/* ==================== CSS data =================== */
+#all-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#new-data{
+    display: flex;
+    flex-direction: column;
+}
+
+.new-data-values{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin:10px
+}

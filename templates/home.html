@@ -6,36 +6,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}" >
+    <script src="{{url_for('static', filename='home.js')}}"></script>
 </head>
-<body>
-    <div id="given-data">
-        <input type="text" name="original-data-number" id="original-data-number">
-        <select name="original-conversion" id="original-data-conversion">
-            <option value=""></option>
-            <option value="millimeters">millimeter</option>
-            <option value="centimeters">centimeter</option>
-            <option value="inches">inch</option>
-            <option value="feet">feet</option>
-            <option value="yard">yard</option>
-            <option value="meter">meter</option>
-            <option value="kilometer">kilometer</option>
-            <option value="miles">miles</option>
-        </select>
+<body id="center">
+    <div id="sidebar">
+        <div id="toggle" onclick="showMobileNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div id="sidebar-buttons">
+            <button id="Length-switch">Length</button>
+            <button id="Mass-switch">Mass</button>
+            <button id="Energy-switch">Energy</button>
+            <button id="Pressure-switch">Pressure</button>
+            <button id="Area-switch">Area</button>
+            <button id="Speed-switch">Speed</button>
+            <button id="Time-switch">Time</button>
+            <button id="Temperature-switch">Temperature</button>
+            <button id="Volume-switch">Volume</button>
+        </div>
     </div>
+
+    <div id="all-data">
+        <!-- <div id="given-data">
+            <input type="text" name="original-data-number" id="original-data-number" placeholder="type number here">
+            <select name="original-conversion" id="original-data-conversion">
+                <option value=""></option>
+                <option value="millimeters">millimeter</option>
+                <option value="centimeters">centimeter</option>
+                <option value="inches">inch</option>
+                <option value="feet">feet</option>
+                <option value="yard">yard</option>
+                <option value="meter">meter</option>
+                <option value="kilometer">kilometer</option>
+                <option value="miles">miles</option>
+            </select>
+        </div>
+
+        <div id="new-data">
+
+        </div> -->
+    </div>
+    
 </body>
 <script>
+    let num;
+    let sel;
     var socket = io();
-    let conversionType = document.querySelector("#original-data-conversion")
-    conversionType.addEventListener("change",conversion)
-
-    function conversion(){
-        let number = document.querySelector("#original-data-number")
-        socket.emit('originalMillimeter', {originalNumber:number.value,originalConversion:conversionType.value}); 
-    } //grabs the given data which is the original number and type that you want to convert to other types to send to backend
 
     socket.on('new_data', function(data) {
         console.log(data)
+        let newDataHtml = document.querySelector("#new-data")
+
+        for (let i in data){
+            let divEntry = document.createElement("div")
+            divEntry.id = i
+            divEntry.className = "new-data-values"
+
+            let h3 = document.createElement("h3")
+            h3.innerText = i.replace("to_","") //changes the names of the backend data recieved
+
+            let input = document.createElement("input")
+            input.value = data[i]
+
+            divEntry.append(h3)
+            divEntry.append(input)
+            newDataHtml.append(divEntry)
+        } //displayes the data in the div new-data
     }); //recieves all the new data from the backend to be displayed
+
+    let lengthSwitch = document.querySelector("#Length-switch")
+    lengthSwitch.addEventListener("click",displayNewData)
+    
+    function displayNewData(){
+        lst = [
+            "",
+            "millimeters",
+            "centimeters",
+            "inches",
+            "feet",
+            "yard",
+            "meter",
+            "kilometer",
+            "miles"
+        ]
+        let newDataHtml = document.querySelector("#all-data")
+        let givenDataDiv = document.createElement("div");
+        givenDataDiv.id = "given-data"
+
+        let originalInput = document.createElement("input");
+        originalInput.id = "original-data-number"
+        originalInput.placeholder = "type number here"
+
+        let originalSelect = document.createElement("select");
+        originalSelect.id = "original-data-conversion"
+        originalSelect.addEventListener("change",function(){
+            let newData = document.querySelector("#new-data")
+            if(newData.textContent != ""){
+                document.querySelector("#new-data").textContent = ""
+            }
+            socket.emit('original', {originalNumber:originalInput.value,originalConversion:originalSelect.value}); //sends data to backend
+        })
+
+        for(let i = 0;i<lst.length;i++){
+            let originalOption = document.createElement("option");
+            originalOption.value = lst[i]
+            originalOption.innerText = lst[i]
+            originalSelect.append(originalOption)
+        }
+
+
+        givenDataDiv.append(originalInput)
+        givenDataDiv.append(originalSelect)
+
+        let newDataDiv = document.createElement("div");
+        newDataDiv.id = "new-data"
+
+        newDataHtml.append(givenDataDiv)
+        newDataHtml.append(newDataDiv)
+    } //when switching to length units creates input and select tags to type given data needed to convert
 </script>
 </html>
