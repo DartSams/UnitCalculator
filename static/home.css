@@ -24,16 +24,14 @@
     justify-content: center;
     height: auto; /* important so when creating new task it doesnt go beyond the border */
     background-color: var(--white);
-    padding:50px;
 }
 
 #sidebar {
     position: fixed;
     width:250px;
-    height: 100%;
+    height: 100vh;
     /* background-color: var(--Sidebar_color); */
     background-color: palegreen;
-
     left:-310px;
     transition: 1s;
     z-index:2;
