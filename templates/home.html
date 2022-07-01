@@ -18,15 +18,15 @@
         </div>
 
         <div id="sidebar-buttons">
-            <button id="Length-switch">Length</button>
-            <button id="Mass-switch">Mass</button>
-            <button id="Energy-switch">Energy</button>
-            <button id="Pressure-switch">Pressure</button>
-            <button id="Area-switch">Area</button>
-            <button id="Speed-switch">Speed</button>
-            <button id="Time-switch">Time</button>
-            <button id="Temperature-switch">Temperature</button>
-            <button id="Volume-switch">Volume</button>
+            <button id="Length-switch" value="length" class="unit-switch">Length</button>
+            <button id="Mass-switch" value="lass" class="unit-switch">Mass</button>
+            <button id="Energy-switch" value="energy" class="unit-switch">Energy</button>
+            <button id="Pressure-switch" value="pressure" class="unit-switch">Pressure</button>
+            <button id="Area-switch" value="area" class="unit-switch">Area</button>
+            <button id="Speed-switch" value="speed" class="unit-switch">Speed</button>
+            <button id="Time-switch" value="time" class="unit-switch">Time</button>
+            <button id="Temperature-switch" value="temperature" class="unit-switch">Temperature</button>
+            <button id="Volume-switch" value="volume" class="unit-switch">Volume</button>
         </div>
     </div>
 
@@ -76,21 +76,40 @@
         } //displayes the data in the div new-data
     }); //recieves all the new data from the backend to be displayed
 
-    let lengthSwitch = document.querySelector("#Length-switch")
-    lengthSwitch.addEventListener("click",displayNewData)
+    const buttons = document.querySelectorAll(".unit-switch")
+    buttons.forEach(function(currentBtn){
+    currentBtn.addEventListener('click', displayNewData)
+    }) //adds a eventlistener to all the sidebar buttons
     
     function displayNewData(){
-        lst = [
-            "",
-            "millimeters",
-            "centimeters",
-            "inches",
-            "feet",
-            "yard",
-            "meter",
-            "kilometer",
-            "miles"
-        ]
+        let prevAllData = document.querySelector("#all-data")
+        if(prevAllData.textContent != ""){
+            document.querySelector("#all-data").textContent = ""
+        } //clears the html div that holds all of the unit converted data to make room for more data
+        let selectedUnit = this.value //holds the currently selected unit of data for use when sending to backend
+        const UNITS = {
+            "length":[
+                "",
+                "millimeters",
+                "centimeters",
+                "inches",
+                "feet",
+                "yard",
+                "meter",
+                "kilometer",
+                "miles"
+            ],
+            "speed":[
+                "",
+                "foot/minute",
+                "miles/hour",
+                "foot/second",
+                "meters/second",
+                "kilometers/hour",
+            ]
+        }
+        let currentConversion = UNITS[selectedUnit] //returns a list of the current units that need to be converted by indexing the UNITS list using the clicked on buttons id using this.value
+        // console.log(currentConversion)
         let newDataHtml = document.querySelector("#all-data")
         let givenDataDiv = document.createElement("div");
         givenDataDiv.id = "given-data"
@@ -105,16 +124,16 @@
             let newData = document.querySelector("#new-data")
             if(newData.textContent != ""){
                 document.querySelector("#new-data").textContent = ""
-            }
-            socket.emit('original', {originalNumber:originalInput.value,originalConversion:originalSelect.value}); //sends data to backend
+            } //clears the html div that holds all of the unit converted data to make room for more data
+            socket.emit('original', {unit:selectedUnit,originalNumber:originalInput.value,originalConversion:originalSelect.value}); //sends data to backend
         })
 
-        for(let i = 0;i<lst.length;i++){
+        for(let i = 0;i<currentConversion.length;i++){
             let originalOption = document.createElement("option");
-            originalOption.value = lst[i]
-            originalOption.innerText = lst[i]
+            originalOption.value = currentConversion[i]
+            originalOption.innerText = currentConversion[i]
             originalSelect.append(originalOption)
-        }
+        } //creates a html option tag that holds the units currently selected to be added to the html tag select
 
 
         givenDataDiv.append(originalInput)
