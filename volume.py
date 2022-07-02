@@ -1,0 +1,39 @@
+volume_data = {
+    "US_gallon":{
+        "to_miles/hour":{
+            "conversion_num":88,
+            "operation":"divide"
+        },
+        "to_foot/second":{
+            "conversion_num":60,
+            "operation":"divide"
+        },
+        "to_meters/second":{
+            "conversion_num":196.9,
+            "operation":"divide"
+        },
+        "to_kilometers/hour":{
+            "conversion_num":54.681,
+            "operation":"divide"
+        }
+    },
+    "US_liquid_quart":{},
+    "US_liquid_pint":{},
+    "US_legal_cup":{},
+    "US_fluid_ounce":{},
+    "US_tablespoon":{},
+    "US_teaspoon":{},
+    "Cubic_meter":{},
+    "Liter":{},
+    "Milliliter":{},
+    "Imperial_gallon":{},
+    "Imperial_quart":{},
+    "Imperial_pint":{},
+    "Imperial_cup":{},
+    "Imperial_fluid ounce":{},
+    "Imperial_tablespoon":{},
+    "Imperial_teaspoon":{},
+    "Cubic_foot":{},
+    "Cubic_inch":{},
+}
+
