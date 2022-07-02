@@ -1,5 +1,5 @@
-volume_data = {
-    "Gallon": {
+{
+    "gallon": {
         "to_US_liquid_quart": {
             "conversion_num": 4.0,
             "operation": "multiply"

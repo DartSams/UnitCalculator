@@ -107,9 +107,17 @@
     height: 100vh;
 }
 
+#given-data{
+    margin-top: 30px;
+}
+
 #new-data{
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    width:100vw;
+    height: 100vh;
+    justify-content: baseline;
 }
 
 .new-data-values{

@@ -65,7 +65,7 @@
             divEntry.className = "new-data-values"
 
             let h3 = document.createElement("h3")
-            h3.innerText = i.replace("to_","") //changes the names of the backend data recieved
+            h3.innerText = i.replaceAll("to_","").replaceAll("_"," ") //changes the names of the backend data recieved to more presentable
 
             let input = document.createElement("input")
             input.value = data[i]
@@ -106,6 +106,27 @@
                 "foot/second",
                 "meters/second",
                 "kilometers/hour",
+            ],
+            "volume":[
+                "Gallon",
+                "US_liquid_quart",
+                "US_liquid_pint",
+                "US_legal_cup",
+                "US fluid ounce",
+                "US_tablespoon",
+                "US_teaspoon",
+                "Cubic_meter",
+                "Liter",
+                "Milliliter",
+                "Imperial_gallon",
+                "Imperial_quart",
+                "Imperial_pint",
+                "Imperial_cup",
+                "Imperial_fluid ounce",
+                "Imperial tablespoon",
+                "Imperial teaspoon",
+                "Cubic_foot",
+                "Cubic_inch",
             ]
         }
         let currentConversion = UNITS[selectedUnit] //returns a list of the current units that need to be converted by indexing the UNITS list using the clicked on buttons id using this.value
@@ -130,8 +151,8 @@
 
         for(let i = 0;i<currentConversion.length;i++){
             let originalOption = document.createElement("option");
-            originalOption.value = currentConversion[i]
-            originalOption.innerText = currentConversion[i]
+            originalOption.value = currentConversion[i].replaceAll("_"," ")
+            originalOption.innerText = currentConversion[i].replaceAll("_"," ")
             originalSelect.append(originalOption)
         } //creates a html option tag that holds the units currently selected to be added to the html tag select
 
