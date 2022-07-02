@@ -147,14 +147,14 @@
             if(newData.textContent != ""){
                 document.querySelector("#new-data").textContent = ""
             } //clears the html div that holds all of the unit converted data to make room for more data
-            jj=originalSelect.value.replaceAll(" ","_")
-            socket.emit('original', {unit:selectedUnit,originalNumber:originalInput.value,originalConversion:jj}); //sends data to backend
+            let placeholder = originalSelect.value.replaceAll(" ","_") //needed to send the correct dict key to the backend
+            socket.emit('original', {unit:selectedUnit,originalNumber:originalInput.value,originalConversion:placeholder}); //sends data to backend
         })
 
         for(let i = 0;i<currentConversion.length;i++){
             let originalOption = document.createElement("option");
-            originalOption.value = currentConversion[i].replaceAll("_"," ")
-            originalOption.innerText = currentConversion[i].replaceAll("_"," ")
+            originalOption.value = currentConversion[i].replaceAll("_"," ") //needed to remove all _ in str for proper viewing
+            originalOption.innerText = currentConversion[i].replaceAll("_"," ") //needed to remove all _ in str for proper viewing
             originalSelect.append(originalOption)
         } //creates a html option tag that holds the units currently selected to be added to the html tag select
 
