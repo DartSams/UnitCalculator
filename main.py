@@ -24,7 +24,7 @@ def handle_message(socket_data:dict): #better than making 100 different function
     print(socket_data)
     converted_data = {}
     for original_type in UNITS[socket_data["unit"]][socket_data["originalConversion"]].items(): #indexes the dictionary to return the unit values
-        name = original_type[0] #returns the name of the unit currently being converted
+        name = original_type[0].replace("to_","").replace("_"," ") #returns the name of the unit currently being converted
         original_data = original_type[1] 
         if original_data["operation"] == "multiply":
             converted_data[name] = round(float(socket_data["originalNumber"]) * original_data["conversion_num"],5)

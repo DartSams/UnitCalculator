@@ -295,7 +295,7 @@ volume_data = {
             "operation": "divide"
         }
     },
-    "US fluid ounce": {
+    "US_fluid_ounce": {
         "to_US_tablespoon": {
             "conversion_num": 2.0,
             "operation": "multiply"
@@ -1035,7 +1035,7 @@ volume_data = {
             "operation": "divide"
         }
     },
-    "Imperial_fluid ounce": {
+    "Imperial_fluid_ounce": {
         "to_Imperial tablespoon": {
             "conversion_num": 1.6,
             "operation": "multiply"
@@ -1109,7 +1109,7 @@ volume_data = {
             "operation": "divide"
         }
     },
-    "Imperial tablespoon": {
+    "Imperial_tablespoon": {
         "to_Imperial teaspoon": {
             "conversion_num": 3.0,
             "operation": "multiply"
@@ -1183,7 +1183,7 @@ volume_data = {
             "operation": "divide"
         }
     },
-    "Imperial teaspoon": {
+    "Imperial_teaspoon": {
         "to_Cubic_foot": {
             "conversion_num": 4784.0,
             "operation": "divide"

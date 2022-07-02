@@ -65,7 +65,7 @@
             divEntry.className = "new-data-values"
 
             let h3 = document.createElement("h3")
-            h3.innerText = i.replaceAll("to_","").replaceAll("_"," ") //changes the names of the backend data recieved to more presentable
+            h3.innerText = i //changes the names of the backend data recieved to more presentable
 
             let input = document.createElement("input")
             input.value = data[i]
@@ -82,6 +82,7 @@
     }) //adds a eventlistener to all the sidebar buttons
     
     function displayNewData(){
+        showMobileNav()
         let prevAllData = document.querySelector("#all-data")
         if(prevAllData.textContent != ""){
             document.querySelector("#all-data").textContent = ""
@@ -146,7 +147,8 @@
             if(newData.textContent != ""){
                 document.querySelector("#new-data").textContent = ""
             } //clears the html div that holds all of the unit converted data to make room for more data
-            socket.emit('original', {unit:selectedUnit,originalNumber:originalInput.value,originalConversion:originalSelect.value}); //sends data to backend
+            jj=originalSelect.value.replaceAll(" ","_")
+            socket.emit('original', {unit:selectedUnit,originalNumber:originalInput.value,originalConversion:jj}); //sends data to backend
         })
 
         for(let i = 0;i<currentConversion.length;i++){
