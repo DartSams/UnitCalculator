@@ -1,20 +1,17 @@
 from flask import Flask, render_template,request,session,redirect
 from dotenv import load_dotenv
 from flask_socketio import SocketIO,emit
-from length import length_data
-from speed import speed_data
-from volume import volume_data
-from mass import mass_data
+import units
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'create secret later'
 socketio = SocketIO(app)
 
 UNITS = {
-    "length":length_data,
-    "speed":speed_data,
-    "volume":volume_data,
-    "mass":mass_data
+    "length":units.length_data,
+    "speed":units.speed_data,
+    "volume":units.volume_data,
+    "mass":units.mass_data
 }
 
 @app.route("/")
