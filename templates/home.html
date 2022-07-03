@@ -19,7 +19,7 @@
 
         <div id="sidebar-buttons">
             <button id="Length-switch" value="length" class="unit-switch">Length</button>
-            <button id="Mass-switch" value="lass" class="unit-switch">Mass</button>
+            <button id="Mass-switch" value="mass" class="unit-switch">Mass</button>
             <button id="Energy-switch" value="energy" class="unit-switch">Energy</button>
             <button id="Pressure-switch" value="pressure" class="unit-switch">Pressure</button>
             <button id="Area-switch" value="area" class="unit-switch">Area</button>
@@ -109,6 +109,7 @@
                 "kilometers/hour",
             ],
             "volume":[
+                "",
                 "Gallon",
                 "US_liquid_quart",
                 "US_liquid_pint",
@@ -128,6 +129,19 @@
                 "Imperial teaspoon",
                 "Cubic_foot",
                 "Cubic_inch",
+            ],
+            "mass":[
+                "",
+                "Metric_ton",
+                "Kilogram",
+                "Gram",
+                "Milligram",
+                "Microgram",
+                "Imperial_ton",
+                "US_ton",
+                "Stone",
+                "Pound",
+                "Ounce"
             ]
         }
         let currentConversion = UNITS[selectedUnit] //returns a list of the current units that need to be converted by indexing the UNITS list using the clicked on buttons id using this.value

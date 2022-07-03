@@ -4,6 +4,7 @@ from flask_socketio import SocketIO,emit
 from length import length_data
 from speed import speed_data
 from volume import volume_data
+from mass import mass_data
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'create secret later'
@@ -12,7 +13,8 @@ socketio = SocketIO(app)
 UNITS = {
     "length":length_data,
     "speed":speed_data,
-    "volume":volume_data
+    "volume":volume_data,
+    "mass":mass_data
 }
 
 @app.route("/")
