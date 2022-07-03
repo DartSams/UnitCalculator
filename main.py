@@ -21,7 +21,7 @@ UNITS = {
 def home():
     return render_template("home.html")
 
-@socketio.on('original')
+@socketio.on('originalToConvert')
 def handle_message(socket_data:dict): #better than making 100 different functions for every conversion type also rounds to the 5th decimal place
     print(socket_data)
     converted_data = {}
@@ -37,6 +37,11 @@ def handle_message(socket_data:dict): #better than making 100 different function
     # return converted_data
     emit('new_data',converted_data) #sends data to frontend
 
+@socketio.on('getUnitKeys')
+def get_unit_keys(socket_data:dict): #needed to get unit measurements of selected unit requested from frontend
+    print(UNITS[socket_data["unit"]].keys())
+    emit('unit_keys',{"key_names":list(UNITS[socket_data["unit"]].keys())}) #sends a list of measurements names of the desired unit requested from frontend
+    return UNITS[socket_data["unit"]].keys()
 
 
 if __name__ == '__main__':

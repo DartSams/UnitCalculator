@@ -57,18 +57,18 @@
 
     socket.on('new_data', function(data) {
         console.log(data)
-        let newDataHtml = document.querySelector("#new-data")
+        let newDataHtml = document.querySelector("#new-data") //selects the div to place all of the conveted data
 
         for (let i in data){
             let divEntry = document.createElement("div")
-            divEntry.id = i
+            divEntry.id = i //sets the id of the div to the converted unit name
             divEntry.className = "new-data-values"
 
             let h3 = document.createElement("h3")
             h3.innerText = i //changes the names of the backend data recieved to more presentable
 
             let input = document.createElement("input")
-            input.value = data[i]
+            input.value = data[i] //creates a input html element and sets the value of it so the recieved converted value
 
             divEntry.append(h3)
             divEntry.append(input)
@@ -82,70 +82,14 @@
     }) //adds a eventlistener to all the sidebar buttons
     
     function displayNewData(){
-        showMobileNav()
+        showMobileNav() //placed here to close the sidebar after selecting the unit
         let prevAllData = document.querySelector("#all-data")
         if(prevAllData.textContent != ""){
             document.querySelector("#all-data").textContent = ""
         } //clears the html div that holds all of the unit converted data to make room for more data
         let selectedUnit = this.value //holds the currently selected unit of data for use when sending to backend
-        const UNITS = {
-            "length":[
-                "",
-                "millimeters",
-                "centimeters",
-                "inches",
-                "feet",
-                "yard",
-                "meter",
-                "kilometer",
-                "miles"
-            ],
-            "speed":[
-                "",
-                "foot/minute",
-                "miles/hour",
-                "foot/second",
-                "meters/second",
-                "kilometers/hour",
-            ],
-            "volume":[
-                "",
-                "Gallon",
-                "US_liquid_quart",
-                "US_liquid_pint",
-                "US_legal_cup",
-                "US fluid ounce",
-                "US_tablespoon",
-                "US_teaspoon",
-                "Cubic_meter",
-                "Liter",
-                "Milliliter",
-                "Imperial_gallon",
-                "Imperial_quart",
-                "Imperial_pint",
-                "Imperial_cup",
-                "Imperial_fluid ounce",
-                "Imperial tablespoon",
-                "Imperial teaspoon",
-                "Cubic_foot",
-                "Cubic_inch",
-            ],
-            "mass":[
-                "",
-                "Metric_ton",
-                "Kilogram",
-                "Gram",
-                "Milligram",
-                "Microgram",
-                "Imperial_ton",
-                "US_ton",
-                "Stone",
-                "Pound",
-                "Ounce"
-            ]
-        }
-        let currentConversion = UNITS[selectedUnit] //returns a list of the current units that need to be converted by indexing the UNITS list using the clicked on buttons id using this.value
-        // console.log(currentConversion)
+
+        socket.emit("getUnitKeys",{unit:selectedUnit}) //sends a request to the backend for a list of the current units that need to be converted by indexing the UNITS list using the clicked on buttons id using this.value
         let newDataHtml = document.querySelector("#all-data")
         let givenDataDiv = document.createElement("div");
         givenDataDiv.id = "given-data"
@@ -162,21 +106,25 @@
                 document.querySelector("#new-data").textContent = ""
             } //clears the html div that holds all of the unit converted data to make room for more data
             let placeholder = originalSelect.value.replaceAll(" ","_") //needed to send the correct dict key to the backend
-            socket.emit('original', {unit:selectedUnit,originalNumber:originalInput.value,originalConversion:placeholder}); //sends data to backend
-        })
+            socket.emit('originalToConvert', {unit:selectedUnit,originalNumber:originalInput.value,originalConversion:placeholder}); //sends data to backend
+        }) //after user inputs a number and unit this event function will send the number,unit and  
 
-        for(let i = 0;i<currentConversion.length;i++){
-            let originalOption = document.createElement("option");
-            originalOption.value = currentConversion[i].replaceAll("_"," ") //needed to remove all _ in str for proper viewing
-            originalOption.innerText = currentConversion[i].replaceAll("_"," ") //needed to remove all _ in str for proper viewing
-            originalSelect.append(originalOption)
-        } //creates a html option tag that holds the units currently selected to be added to the html tag select
+        socket.on('unit_keys',function(data){
+            console.log(data)
+            let currentUnitLst = data.key_names 
+            for(let i = 0;i<currentUnitLst.length;i++){
+                let originalOption = document.createElement("option");
+                originalOption.value = currentUnitLst[i].replaceAll("_"," ") //needed to remove all _ in str for proper viewing
+                originalOption.innerText = currentUnitLst[i].replaceAll("_"," ") //needed to remove all _ in str for proper viewing
+                originalSelect.append(originalOption)
+            } //creates a html option tag that holds the units currently selected to be added to the html tag select
+        }); //cuts out needing to add new unit names to frontend side also gets rid of hardcoding aspect
 
 
         givenDataDiv.append(originalInput)
         givenDataDiv.append(originalSelect)
 
-        let newDataDiv = document.createElement("div");
+        let newDataDiv = document.createElement("div"); //needed to create a empty div so it can be filled with converted data recieved from backend later
         newDataDiv.id = "new-data"
 
         newDataHtml.append(givenDataDiv)
