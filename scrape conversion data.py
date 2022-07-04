@@ -1,3 +1,4 @@
+from regex import P
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -11,7 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 options = Options()
-options.headless = True
+# options.headless = True
 
 driver=webdriver.Chrome(r'chromedriver.exe', options=options)
 
@@ -48,14 +49,55 @@ mass_lst = [
     "Pound",
     "Ounce",
 ]
+pressure_lst = [
+    "Bar",
+    "Pascal",
+    "Pound-force/inch squared",
+    "Standard_atmosphere",
+    "Torr"
+]
+frequency_lst = [
+    "Hertz",
+    "Kilohertz",
+    "Megahertz",
+    "Gigahertz"
+]
+energy_lst = [
+    "Joule",
+    "Kilojoule",
+    "Gram_calorie",
+    "kilo_calorie",
+    "Watt_hour",
+    "Kilo_watt_hour",
+    "Electron_volt",
+    "British_thermal_unit",
+    "US_therm",
+    "Foot_pound"
+]
 
+
+
+fuel_lst = [
+    "Miles/gallon",
+    "Imperial_Miles/gallon",
+    "Kilometer/liter",
+] #do myself
+temperature_lst = [
+    "Fahrenheit",
+    "Celsius",
+    "Kelvin"
+] #do myself
 
 unit_dict = {
     "volume":volume_lst,
-    "mass":mass_lst
+    "mass":mass_lst,
+    "pressure":pressure_lst,
+    "fuel":fuel_lst,
+    "frequency":frequency_lst,
+    "energy":energy_lst
 }
 
-def scrape_conversion_data(lst):
+def scrape_conversion_data(lst,unit_type):
     copied_list = lst.copy() #makes a copy of the first list
     conversion_dict = {}
     for i in lst:
@@ -87,15 +129,15 @@ def scrape_conversion_data(lst):
 
             elif "divide" in conversion_string:
                 conversion_dict[i][name]["operation"] = "divide"
-                print(i,j,"divide by ",str(float(conversion_num)))
+                print(i,j,"divide by ",str(conversion_dict[i][name]["conversion_num"]))
 
             # print(f"convert {i} to {j}")
         copied_list.append(placeholder)
 
     # break
 
-    with open('mass.json', 'w') as fp:
+    with open(f'units/{unit_type}.py', 'w') as fp:
         json.dump(conversion_dict, fp,indent=4)
 
 
-# scrape_conversion_data(unit_dict["mass"])
+scrape_conversion_data(unit_dict["energy"],"energy")

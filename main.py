@@ -11,7 +11,10 @@ UNITS = {
     "length":units.length_data,
     "speed":units.speed_data,
     "volume":units.volume_data,
-    "mass":units.mass_data
+    "mass":units.mass_data,
+    "pressure":units.pressure_data,
+    "frequency":units.frequency_data,
+    "energy":units.energy_data
 }
 
 @app.route("/")
@@ -43,3 +46,8 @@ def get_unit_keys(socket_data:dict): #needed to get unit measurements of selecte
 
 if __name__ == '__main__':
     socketio.run(app,debug=True,port=8000)
+
+
+##TODO
+#need to scrape temperature and fuel economy myself as these use equations
+#create readme file of steps of adding new units
