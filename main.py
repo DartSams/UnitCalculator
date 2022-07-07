@@ -16,7 +16,8 @@ UNITS = {
     "frequency":units.frequency_data,
     "energy":units.energy_data,
     "time":units.time_data,
-    "fuel":units.fuel_data
+    "fuel":units.fuel_data,
+    "temperature":units.temperature_data
 }
 
 @app.route("/")
@@ -28,12 +29,13 @@ def handle_message(socket_data:dict): #better than making 100 different function
     print(socket_data)
     converted_data = {}
     for original_type in UNITS[socket_data["unit"]][socket_data["originalConversion"]].items(): #indexes the dictionary to return the unit values
-        print(original_type)
+        # print(original_type)
         name = original_type[0].replace("to_","").replace("_"," ") #returns the name of the unit currently being converted
         original_data = original_type[1] 
         if len(original_data) == 3: #this is needed because some unit conversions require equtions with different or multiple steps
-            # print(i[1]["function"])
-            converted_data[name] = original_data["conversion_num"] / float(socket_data["originalNumber"])
+            # print(socket_data)
+            print(original_data)
+            converted_data.update(original_data["function"](socket_data["originalConversion"],float(socket_data["originalNumber"]))) #the original_data["function"] calls the function inside the selected unit dict by passing the params of the original starting unit and the original number to be converted and then this is calculated in another file which is put inside a dict then the dict is then joined together with the dict here
 
         elif len(original_data) == 2: #if the converted unit is normal and doesnt require a function
             if original_data["operation"] == "multiply":
@@ -42,6 +44,7 @@ def handle_message(socket_data:dict): #better than making 100 different function
             elif original_data["operation"] == "divide":
                 converted_data[name] = round(float(socket_data["originalNumber"]) / original_data["conversion_num"],5)
 
+    print(converted_data)
     # return converted_data
     emit('new_data',converted_data) #sends data to frontend
 
