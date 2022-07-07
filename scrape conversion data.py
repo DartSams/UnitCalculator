@@ -12,7 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 options = Options()
-# options.headless = True
+options.headless = True
 
 driver=webdriver.Chrome(r'chromedriver.exe', options=options)
 
@@ -74,7 +74,20 @@ energy_lst = [
     "US_therm",
     "Foot_pound"
 ]
-
+time_lst = [
+    "Nanosecond",
+    "Microsecond",
+    "Millisecond",
+    "Second",
+    "Minute",
+    "Hour",
+    "Day",
+    "Week",
+    "Month",
+    "Calendar year",
+    "Decade",
+    "Century",
+]
 
 
 fuel_lst = [
@@ -94,7 +107,8 @@ unit_dict = {
     "pressure":pressure_lst,
     "fuel":fuel_lst,
     "frequency":frequency_lst,
-    "energy":energy_lst
+    "energy":energy_lst,
+    "time":time_lst
 }
 
 def scrape_conversion_data(lst,unit_type):
@@ -140,4 +154,4 @@ def scrape_conversion_data(lst,unit_type):
         json.dump(conversion_dict, fp,indent=4)
 
 
-scrape_conversion_data(unit_dict["energy"],"energy")
+scrape_conversion_data(unit_dict["time"],"time")

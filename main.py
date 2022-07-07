@@ -14,7 +14,9 @@ UNITS = {
     "mass":units.mass_data,
     "pressure":units.pressure_data,
     "frequency":units.frequency_data,
-    "energy":units.energy_data
+    "energy":units.energy_data,
+    "time":units.time_data,
+    "fuel":units.fuel_data
 }
 
 @app.route("/")
@@ -26,13 +28,19 @@ def handle_message(socket_data:dict): #better than making 100 different function
     print(socket_data)
     converted_data = {}
     for original_type in UNITS[socket_data["unit"]][socket_data["originalConversion"]].items(): #indexes the dictionary to return the unit values
+        print(original_type)
         name = original_type[0].replace("to_","").replace("_"," ") #returns the name of the unit currently being converted
         original_data = original_type[1] 
-        if original_data["operation"] == "multiply":
-            converted_data[name] = round(float(socket_data["originalNumber"]) * original_data["conversion_num"],5)
-        
-        elif original_data["operation"] == "divide":
-            converted_data[name] = round(float(socket_data["originalNumber"]) / original_data["conversion_num"],5)
+        if len(original_data) == 3: #this is needed because some unit conversions require equtions with different or multiple steps
+            # print(i[1]["function"])
+            converted_data[name] = original_data["conversion_num"] / float(socket_data["originalNumber"])
+
+        elif len(original_data) == 2: #if the converted unit is normal and doesnt require a function
+            if original_data["operation"] == "multiply":
+                converted_data[name] = round(float(socket_data["originalNumber"]) * original_data["conversion_num"],5)
+            
+            elif original_data["operation"] == "divide":
+                converted_data[name] = round(float(socket_data["originalNumber"]) / original_data["conversion_num"],5)
 
     # return converted_data
     emit('new_data',converted_data) #sends data to frontend
