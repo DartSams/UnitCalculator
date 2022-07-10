@@ -1,4 +1,3 @@
-from regex import P
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -12,7 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 options = Options()
-options.headless = True
+options.headless = True #this stops the browser from opening every time the file is run
 
 driver=webdriver.Chrome(r'chromedriver.exe', options=options)
 
@@ -88,18 +87,16 @@ time_lst = [
     "Decade",
     "Century",
 ]
-
-
 fuel_lst = [
     "Miles/gallon",
     "Imperial_Miles/gallon",
     "Kilometer/liter",
-] #do myself
+]
 temperature_lst = [
     "Fahrenheit",
     "Celsius",
     "Kelvin"
-] #do myself
+] 
 
 unit_dict = {
     "volume":volume_lst,
@@ -154,4 +151,4 @@ def scrape_conversion_data(lst,unit_type):
         json.dump(conversion_dict, fp,indent=4)
 
 
-scrape_conversion_data(unit_dict["time"],"time")
+# scrape_conversion_data(unit_dict["time"],"time")

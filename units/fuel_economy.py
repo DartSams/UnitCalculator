@@ -6,9 +6,8 @@ def fuel_convert(starting_unit:str,num:float): #function for working with fuel_c
         unit_data = i[1]
         if len(unit_data) == 3: #this is needed because some unit conversions require equtions with different or_multiple steps
             #_print(i[1]["function"])
-            # data[f"answer"] = unit_data["conversion_num"] / num ####works
-            # return unit_data["conversion_num"] / num ####works
-            data[f"{unit_name}"] = unit_data["conversion_num"] / num ####works
+
+            data[unit_name] = unit_data["conversion_num"] / num ####works
 
     return data
 

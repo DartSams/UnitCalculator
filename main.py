@@ -1,7 +1,7 @@
 from flask import Flask, render_template,request,session,redirect
 from dotenv import load_dotenv
 from flask_socketio import SocketIO,emit
-import units
+import units #needed to import everything in the __init__.py file in the units folder
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'create secret later'
@@ -58,7 +58,3 @@ def get_unit_keys(socket_data:dict): #needed to get unit measurements of selecte
 if __name__ == '__main__':
     socketio.run(app,debug=True,port=8000)
 
-
-##TODO
-#need to scrape temperature and fuel economy myself as these use equations
-#create readme file of steps of adding new units

@@ -4,7 +4,8 @@ def temp_convert(starting_unit:str,num:float): #function for working with temp_c
         #_print(i[1])
         unit_name = i[0]
         unit_data = i[1]
-
+        if unit_data["function"]:
+            print("here")
         # print(i)
         if starting_unit == "Fahrenheit":
             if unit_name == "Celsius":
