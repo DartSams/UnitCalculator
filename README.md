@@ -13,11 +13,8 @@
 
 ## Step 3
     In the same file <scrape conversion data.py> call the function <scrape_conversion_data> and pass in 
-
     the parameters the first being the list created in Step 1 and the second parameter being the unit type
-
     this function will scrape google collecting data and inputting them in a dictionary to be exported to a 
-    
     newly created file in the <units> folder
 
 ## Step 4
