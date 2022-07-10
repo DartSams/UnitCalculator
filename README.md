@@ -4,7 +4,7 @@
 
 
 ### Steps To Add New Units by webscraping google
-<img src="static\images\project_preview\unit calculater preview.PNG" alt="unit calculater preview">
+<img src="static\images\project_preview\unit calculater preview.png" alt="unit calculater preview">
 
 ## Step 1
     In the file <scrape conversion data.py> make a list of strings containing the measurements of the units 
