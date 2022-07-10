@@ -12,10 +12,13 @@
     - Next add the list previousely created to the dict varaible <unit_dict> 
 
 ## Step 3
-<pre> In the same file <scrape conversion data.py> call the function <scrape_conversion_data> and pass in 
+    In the same file <scrape conversion data.py> call the function <scrape_conversion_data> and pass in 
+
     the parameters the first being the list created in Step 1 and the second parameter being the unit type
-    this function will scrape google collecting data and inputting them in a dictionary to be exported to a newly created file in the <units> folder 
-</pre>
+
+    this function will scrape google collecting data and inputting them in a dictionary to be exported to a 
+    
+    newly created file in the <units> folder
 
 ## Step 4
     - In the units folder locate the newly created file and put the json dict into a variable <unit_name_data>
