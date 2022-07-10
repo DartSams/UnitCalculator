@@ -24,8 +24,7 @@
 ## Step 5
     - In the <units> folder locate the file <__init__.py> this file is needed so files inside the folder
     can be called/used outside this scope such as being used in the main.py file now here you will add
-    the line 
-    <from units.unit_name import unit_name_data> 
+    the line <from units.unit_name import unit_name_data> 
 
 ## Step 6
     - Next in the <main.py> file find the dict <UNITS> and create a new key and value pair the key
@@ -58,11 +57,9 @@
 ## Step 4
     - In the <units> folder locate the file <__init__.py> this file is needed so files inside the
     folder can be called/used outside this scope such as being used in the main.py file now here
-    you will add the line 
-    <from units.unit_name import unit_name_data> 
+    you will add the line <from units.unit_name import unit_name_data> 
 
 ## Step 5
     - Next in the <main.py> file find the dict <UNITS> and create a new key and value pair
     the key being the unit and the value being the file created in Step 3
-
     Ex. "length":units.length_data
