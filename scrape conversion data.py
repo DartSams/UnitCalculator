@@ -1,19 +1,16 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import requests
-import random
 import time
 import json
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import itertools
 
 options = Options()
-options.headless = True #this stops the browser from opening every time the file is run
+options.headless = (
+    True  # this stops the browser from opening every time the file is run
+)
 
-driver=webdriver.Chrome(r'chromedriver.exe', options=options)
+driver = webdriver.Chrome(r"chromedriver.exe", options=options)
 
 volume_lst = [
     "gallon",
@@ -52,15 +49,10 @@ pressure_lst = [
     "Bar",
     "Pascal",
     "Pound-force/inch squared",
-    "Standard_atmosphere",
-    "Torr"
+    "Standard atmosphere",
+    "Torr",
 ]
-frequency_lst = [
-    "Hertz",
-    "Kilohertz",
-    "Megahertz",
-    "Gigahertz"
-]
+frequency_lst = ["Hertz", "Kilohertz", "Megahertz", "Gigahertz"]
 energy_lst = [
     "Joule",
     "Kilojoule",
@@ -71,7 +63,7 @@ energy_lst = [
     "Electron_volt",
     "British_thermal_unit",
     "US_therm",
-    "Foot_pound"
+    "Foot_pound",
 ]
 time_lst = [
     "Nanosecond",
@@ -92,63 +84,56 @@ fuel_lst = [
     "Imperial_Miles/gallon",
     "Kilometer/liter",
 ]
-temperature_lst = [
-    "Fahrenheit",
-    "Celsius",
-    "Kelvin"
-] 
+temperature_lst = ["Fahrenheit", "Celsius", "Kelvin"]
 
 unit_dict = {
-    "volume":volume_lst,
-    "mass":mass_lst,
-    "pressure":pressure_lst,
-    "fuel":fuel_lst,
-    "frequency":frequency_lst,
-    "energy":energy_lst,
-    "time":time_lst
+    "volume": volume_lst,
+    "mass": mass_lst,
+    "pressure": pressure_lst,
+    "fuel": fuel_lst,
+    "frequency": frequency_lst,
+    "energy": energy_lst,
+    "time": time_lst,
 }
 
-def scrape_conversion_data(lst,unit_type):
-    copied_list = lst.copy() #makes a copy of the first list
+
+def scrape_conversion_data(lst, unit_type):
     conversion_dict = {}
-    for i in lst:
+    permutations = itertools.permutations(lst, 2)
+    for permutation in permutations:
+        i, j = permutation
         driver.implicitly_wait(5)
-        conversion_dict[i] = {}
-        if i in copied_list: #needed to remove duplicate from 2nd list to be scraped without messing up googles layout then placeholder will be placed back into 2nd list
-            placeholder = i
-            copied_list.remove(i)
-        for j in copied_list: #needed to iterate through all of the elements in the 2nd list while holding onto 1 element in the first list at a time
-            time.sleep(3) #needed because the scraper will move to fast so google will think its a robot making queries
-            # s = f"convert {i} to {j}"
-            driver.get(str(f"https://www.google.com/search?q=convert+{i}+to+{j}")) #uses google search query
-            conversion_string = driver.find_element(By.CLASS_NAME,"bjhkR").text.split(" ") #finds the div with this classname to return the conversion description
-            # print(conversion_string)
-            # print(i,j,conversion_string)
-            name = "to_" + j
-            conversion_dict[i][name] = {}
-            if "e+" in conversion_string[-1]: #this will check if the conversion number is in scientific notation and will convert it to python syntax not necessary because python does this automatically but is placed here for extra clarification (handling all cases)
-                conversion_num_placeholder = conversion_string[-1].split("e+")
-                conversion_num = float(conversion_num_placeholder[0])*10**int(conversion_num_placeholder[-1])
-                conversion_dict[i][name]["conversion_num"] = float(conversion_num)
+        if i not in conversion_dict:
+            conversion_dict[i] = {}
+        print(i, j)
+        time.sleep(3)
+        # because the scraper will move too fast so google will think its a robot making queries
+        driver.get(str(f"https://www.google.com/search?q=convert+{i}+to+{j}"))
+        # uses google search query
+        conversion_string = driver.find_element(By.CLASS_NAME, "bjhkR").text.split(" ")
+        # finds the div with this classname to return the conversion description
 
-            elif "e+" not in conversion_string[-1]:
-                conversion_dict[i][name]["conversion_num"] = float(conversion_string[-1])
+        name = "to_" + j
+        conversion_dict[i][name] = {}
+        if "e+" in conversion_string[-1]:
+            conversion_num_placeholder = conversion_string[-1].split("e+")
+            conversion_num = float(
+                conversion_num_placeholder[0].replace(",", ".")
+            ) * 10 ** int(conversion_num_placeholder[-1])
+            conversion_dict[i][name]["conversion_num"] = float(conversion_num)
+        elif "e+" not in conversion_string[-1]:
+            conversion_dict[i][name]["conversion_num"] = float(
+                conversion_string[-1].replace(",", ".")
+            )
 
-            if "multiply" in conversion_string:
-                conversion_dict[i][name]["operation"] = "multiply"
-                print(i,j,"multiply by ",str(conversion_dict[i][name]["conversion_num"]))
+        # google will use local language with the same URL. Potential bug here.
+        if "multiply" in conversion_string or "multiplier" in conversion_string:
+            conversion_dict[i][name]["operation"] = "multiply"
+        elif "divide" in conversion_string or "diviser" in conversion_string:
+            conversion_dict[i][name]["operation"] = "divide"
 
-            elif "divide" in conversion_string:
-                conversion_dict[i][name]["operation"] = "divide"
-                print(i,j,"divide by ",str(conversion_dict[i][name]["conversion_num"]))
-
-            # print(f"convert {i} to {j}")
-        copied_list.append(placeholder)
-
-    # break
-
-    with open(f'units/{unit_type}.py', 'w') as fp:
-        json.dump(conversion_dict, fp,indent=4)
+    with open(f"units/{unit_type}.py", "w") as fp:
+        json.dump(conversion_dict, fp, indent=4)
 
 
-# scrape_conversion_data(unit_dict["time"],"time")
+scrape_conversion_data(unit_dict["pressure"], "pressure")
